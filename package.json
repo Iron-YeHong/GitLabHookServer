@@ -1,0 +1,23 @@
+{
+  "name": "gitlab_hook_server",
+  "version": "1.0.0",
+  "description": "Server for GitLab webhook",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Iron-YeHong/GitLabHookServer.git"
+  },
+  "author": "Iron",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Iron-YeHong/GitLabHookServer/issues"
+  },
+  "homepage": "https://github.com/Iron-YeHong/GitLabHookServer#readme",
+  "dependencies": {
+    "bl": "^2.1.2",
+    "log4js": "^3.0.6"
+  }
+}

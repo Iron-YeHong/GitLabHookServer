@@ -16,28 +16,29 @@ http.createServer(function (req, res) {
     });
 }).listen(port);
 
-logger.debug(`GitLab Hook Server running at ${host}:${port}/webhook`)
+logger.info(`GitLab Hook Server running at ${host}:${port}/webhook`)
 
+// handle gitlab events
 handler.on('error', function (err) {
-  	console.error('Error:', err.message);
+    console.error('Error:', err.message);
 });
 
 handler.on('push', function (event) {
-  	console.log('Received a push event for %s to %s',
-    event.payload.repository.name,
-    event.payload.ref);
+    console.log('Received a push event for %s to %s',
+        event.payload.repository.name,
+        event.payload.ref);
 });
 
 handler.on('issues', function (event) {
-  	console.log('Received an issue event for %s action=%s: #%d %s',
-    event.payload.repository.name,
-    event.payload.action,
-    event.payload.issue.number,
-    event.payload.issue.title);
+    console.log('Received an issue event for %s action=%s: #%d %s',
+        event.payload.repository.name,
+        event.payload.action,
+        event.payload.issue.number,
+        event.payload.issue.title);
 });
 
-handler.on('merge', function(event){
-    console.log('Received an issue event for %s action=%s: #%d %s',
-    event.payload.repository.name,
-    event.payload.description);
+handler.on('merge', function (event) {
+    console.log('Received an merge event for %s action=%s: #%d %s',
+        event.payload.repository.name,
+        event.payload.description);
 });

@@ -2,7 +2,7 @@ var log4js = require('log4js');
 
 log4js.configure({
     appenders:{
-        std: { type: "stdout", level: "all", layout:{type: "basic", } },
+        std: { type: "stdout", layout:{type: "basic", } },
         file: { type: "file", filename: "log.txt", encoding: "utf-8" }
     },
     categories: {
@@ -11,12 +11,4 @@ log4js.configure({
     }
 });
 
-var logger = log4js.getLogger("custom");
-logger.warn("I will be logged in log.txt");
-
-module.exports = function(){
-    var logger = log4js.getLogger();
-    logger.level ='debug';
-
-   return logger;
-};
+module.exports = log4js.getLogger("custom");

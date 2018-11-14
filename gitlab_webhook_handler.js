@@ -1,77 +1,84 @@
-const EventEmitter = require('events').EventEmitter
-, inherits     = require('util').inherits
-, bl           = require('bl')
+/*jshint esversion: 6 */
 
-function create (options) {
-  if (typeof options != 'object')
-    throw new TypeError('must provide an options object')
+var events = require("events");
+var eventEmitter = events.EventEmitter;
 
-  if (typeof options.path != 'string')
-    throw new TypeError('must provide a \'path\' option')
+var bl = require("bl");
+
+function create(options) {
+  if (typeof options != "object")
+    throw new TypeError("must provide an options object");
+
+  if (typeof options.path != "string")
+    throw new TypeError("must provide a 'path' option");
 
   // make it an EventEmitter, sort of
-  handler.__proto__ = EventEmitter.prototype
-  EventEmitter.call(handler)
+  handler.__proto__ = eventEmitter.prototype;
+  eventEmitter.call(handler);
 
-  return handler
+  return handler;
 
-  function handler (req, res, callback) {
-    if (req.url.split('?').shift() !== options.path)
-      return callback()
+  function handler(req, res, callback) {
+    if (req.url.split("?").shift() !== options.path) return callback();
 
-    function hasError (msg) {
-      res.writeHead(400, { 'content-type': 'application/json' })
-      res.end(JSON.stringify({ error: msg }))
+    function hasError(msg) {
+      res.writeHead(400, { "content-type": "application/json" });
+      res.end(JSON.stringify({ error: msg }));
 
-      var err = new Error(msg)
+      var err = new Error(msg);
 
-      handler.emit('error', err, req)
-      callback(err)
+      handler.emit("error", err, req);
+      callback(err);
     }
 
-    var event = req.headers['x-gitlab-event'];
-
-    if (!event)
-     return hasError('No X-Gitlab-Event found on request')
-
-   req.pipe(bl(function (err, data) {
-    if (err) {
-      return hasError(err.message)
+    var gitlabEvent = req.headers["x-gitlab-event"];
+    if (!gitlabEvent) {
+      return hasError("No X-Gitlab-Event found on request");
     }
 
-    var obj
+    req.pipe(
+      bl(function(err, data) {
+        if (err) {
+          return hasError(err.message);
+        }
 
-    try {
-      obj = JSON.parse(data.toString())
-    } catch (e) {
-      return hasError(e)
-    }
-    
-      // console.log(obj);
-      var event = obj.object_kind;
+        var obj;
+        try {
+          obj = JSON.parse(data.toString());
+        } catch (e) {
+          return hasError(e);
+        }
 
-      // invalid json
-      if (!obj || !obj.repository || !obj.repository.name) {
-       return hasError('received invalid data from ' + req.headers['host'] + ', returning 400');
-     }
+        // console.log(obj);
+        var event = obj.object_kind;
 
-     var repo = obj.repository.name;
+        // invalid json
+        if (!obj || !obj.repository || !obj.repository.name) {
+          return hasError(
+            "received invalid data from " +
+              req.headers["host"] +
+              ", returning 400"
+          );
+        }
 
-     res.writeHead(200, { 'content-type': 'application/json' })
-     res.end('{"ok":true}')
+        var repo = obj.repository.name;
 
-     var emitData = {
-       event   : event,
-       payload : obj,
-       protocol: req.protocol, 
-       host    : req.headers['host'],
-       url     : req.url
-     };
+        res.writeHead(200, { "content-type": "application/json" });
+        res.end('{"ok":true}');
 
-    handler.emit(event, emitData);
-    handler.emit('*', emitData);
-  }));
- }
+        var emitData = {
+          event: event,
+          payload: obj,
+          protocol: req.protocol,
+          host: req.headers["host"],
+          url: req.url
+        };
+
+        handler.emit(event, emitData);
+        handler.emit("*", emitData);
+      })
+    );
+  }
 }
 
 module.exports = create;

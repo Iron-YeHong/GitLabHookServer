@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Iron-YeHong/GitLabHookServer#readme",
   "dependencies": {
     "bl": "^2.1.2",
-    "log4js": "^3.0.6"
+    "log4js": "^3.0.6",
+    "request": "^2.88.0"
   }
 }

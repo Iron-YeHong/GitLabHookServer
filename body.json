@@ -1,0 +1,45 @@
+{
+  "id": "13893633",
+  "type": "page",
+  "status": "current",
+  "title": "送测变更-测试",
+  "body": {
+    "editor": {
+      "value": "<p>【A1】</p><table class=\"relative-table confluenceTable\" style=\"width: 1179.09px;\"><thead><tr><th class=\"confluenceTh\"><br /></th><th colspan=\"1\" class=\"confluenceTh\">变动点</th><th class=\"confluenceTh\">开发者</th><th colspan=\"1\" class=\"confluenceTh\">审查者</th><th class=\"confluenceTh\">详细说明</th><th class=\"confluenceTh\">影响功能<span style=\"color: rgb(255,0,0);\">（必填）</span></th><th class=\"confluenceTh\"><p>是否已自测</p><p><span style=\"color: rgb(255,0,0);\">（送测包）</span></p></th><th colspan=\"1\" class=\"confluenceTh\">备注</th><th colspan=\"1\" class=\"confluenceTh\"><ul class=\"inline-task-list\" data-inline-tasks-content-id=\"13893633\"><li data-inline-task-id=\"702\">测试人</li></ul></th></tr><tr><td class=\"confluenceTd\">1</td><td colspan=\"1\" class=\"confluenceTd\">连续打开课件异步重入</td><td colspan=\"1\" class=\"confluenceTd\">黄腾霄</td><td colspan=\"1\" class=\"confluenceTd\">吕毅</td><td colspan=\"1\" class=\"confluenceTd\"><a href=\"https://jira.cvte.com/browse/EN-13860\" class=\"jira-issue-key\"><img class=\"confluence-embedded-image icon confluence-external-resource\" src=\"https://jira.cvte.com/secure/viewavatar?size=xsmall&amp;avatarId=10303&amp;avatarType=issuetype\" data-image-src=\"https://jira.cvte.com/secure/viewavatar?size=xsmall&amp;avatarId=10303&amp;avatarType=issuetype\">EN-13860</a> - <span class=\"summary\">休眠后连续打开课件失败</span> <span class=\"aui-lozenge aui-lozenge-subtle             aui-lozenge-current     jira-macro-single-issue-export-pdf\">测试中</span></td><td colspan=\"1\" class=\"confluenceTd\">打开，新建课件，导入ppt</td><td colspan=\"1\" class=\"confluenceTd\"><ul class=\"inline-task-list\" data-inline-tasks-content-id=\"13893633\"><li data-inline-task-id=\"703\"> </li></ul></td><td colspan=\"1\" class=\"confluenceTd\"><br /></td><td colspan=\"1\" class=\"confluenceTd\"><br /></td></tr></thead></table><p class=\"auto-cursor-target\"><br /></p>",
+      "representation": "storage",
+      "_expandable": {
+        "webresource": "",
+        "content": "/rest/api/content/13893633"
+      }
+    },
+    "_expandable": {
+      "view": "",
+      "export_view": "",
+      "styled_view": "",
+      "storage": "",
+      "anonymous_export_view": ""
+    }
+  },
+  "extensions": { "position": "none" },
+  "_expandable": {
+    "container": "/rest/api/space/SPC",
+    "metadata": "",
+    "operations": "",
+    "children": "/rest/api/content/13893633/child",
+    "restrictions": "/rest/api/content/13893633/restriction/byOperation",
+    "history": "/rest/api/content/13893633/history",
+    "ancestors": "",
+    "version": "",
+    "descendants": "/rest/api/content/13893633/descendant",
+    "space": "/rest/api/space/SPC"
+  },
+  "_links": {
+    "self": "https://kb-intern.gz.cvte.cn/rest/api/content/13893633",
+    "base": "https://kb-intern.gz.cvte.cn",
+    "context": "",
+    "collection": "/rest/api/content",
+    "webui": "/pages/viewpage.action?pageId=13893633",
+    "edit": "/pages/resumedraft.action?draftId=13893633&draftShareId=760a8ece-2878-4603-89d6-fd349a0ae40d",
+    "tinyui": "/x/AQDU"
+  }
+}

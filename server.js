@@ -1,13 +1,16 @@
 /*jshint esversion: 6 */
-
-const host = "http://127.0.0.1";
-const port = 12701;
+var setting = require("./setting")
 
 var logger = require("./logger");
 var confluence = require("./confluence");
 
+let host = setting.webhook.host;
+let port = setting.webhook.port;
+let url = setting.webhook.url;
+
+
 var http = require("http");
-var handler = require("./gitlab_webhook_handler")({ path: "/webhook" });
+var handler = require("./gitlab_webhook_handler")({ path: `${url}` });
 
 // creat a GitLab webhook server
 http
@@ -19,7 +22,7 @@ http
   })
   .listen(port);
 
-logger.info(`GitLab Hook Server running at ${host}:${port}/webhook`);
+logger.info(`GitLab Hook Server running at ${host}:${port}${url}`);
 
 // handle gitlab events
 handler.on("error", function(err) {
@@ -45,21 +48,39 @@ handler.on("issues", function(event) {
 });
 
 handler.on("merge_request", function(event) {
+
+  let source_branch = event.payload.object_attributes.source_branch;
+  let target_branch = event.payload.object_attributes.target_branch;
+
   if (event.payload.object_attributes.action == "open") {
     console.log(
-      "Received an merge_request event for %s from %s",
+      "Received an merge_request event @%s from %s(%s) to %s(%s)",
       event.payload.repository.name,
-      event.payload.user.name
+      source_branch,
+      event.payload.user.name,
+      target_branch,
+      event.payload.assignee.name
     );
   } else if (event.payload.object_attributes.action == "merge") {
     console.log(
-      "Received an merge event for %s from %s",
+      "Received an merge event @%s from %s(%s) to %s(%s)",
       event.payload.repository.name,
-      event.payload.user.name
+      source_branch,
+      event.payload.user.name,
+      target_branch,
+      event.payload.assignee.name
     );
+
+    if(setting.repository.targets != null){
+        if(setting.repository.targets.indexOf(target_branch) == -1){
+          logger.info("The target branch is not in the config.json file.");
+          return;
+        }
+    }
+
     confluence.register({
-      developer: event.payload.object_attributes.last_commit.author.name,
-      assignee: event.payload.user.name,
+      developer: event.payload.user.name,
+      assignee: event.payload.assignee.name,
       description: event.payload.object_attributes.description
     });
   }

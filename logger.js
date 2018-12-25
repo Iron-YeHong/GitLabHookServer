@@ -7,7 +7,7 @@ log4js.configure({
     },
     categories: {
         default: {appenders: ["std"], level: "debug"},
-        custom: {appenders: ["std", /*"file"*/], level: "all"}
+        custom: {appenders: ["std", "file"], level: "all"}
     }
 });
 

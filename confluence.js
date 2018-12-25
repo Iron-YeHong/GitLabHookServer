@@ -4,12 +4,7 @@ var request = require("request");
 var querystring = require('querystring');
 var cheerio = require("cheerio");
 
-var settings = {
-  host: "host",
-  contentId: 13893633,
-  username: "username",
-  password: "password"
-};
+var setting = require("./setting").confluence;
 
 function registerMergeRequest(merge){
   var desc = querystring.parse(merge.description,"<<<", ">>>")
@@ -40,10 +35,10 @@ function updateContent(mergeDesc) {
       // 上传内容
       var options = {
         method: "PUT",
-        url: `${settings.host}/rest/api/content/${settings.contentId}`,
+        url: `${setting.host}/rest/api/content/${setting.contentId}`,
         auth: {
-          username: `${settings.username}`,
-          password: `${settings.password}`
+          username: `${setting.username}`,
+          password: `${setting.password}`
         },
         headers: {
           Accept: "application/json",
@@ -88,12 +83,12 @@ function getVersion(handler){
 function get(param, handler){
     var options = {
         method: "GET",
-        url: `${settings.host}/rest/api/content/${
-          settings.contentId
+        url: `${setting.host}/rest/api/content/${
+          setting.contentId
         }?${param}`,
         auth: {
-          username: `${settings.username}`,
-          password: `${settings.password}`
+          username: `${setting.username}`,
+          password: `${setting.password}`
         },
         headers: {
           Accept: "application/json"

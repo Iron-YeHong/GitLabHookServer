@@ -19,8 +19,9 @@
   "dependencies": {
     "bl": "^2.1.2",
     "cheerio": "^1.0.0-rc.2",
-    "jsdom": "^13.0.0",
+    "jsdom": "^13.1.0",
     "log4js": "^3.0.6",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "supports-color": "^6.0.0"
   }
 }

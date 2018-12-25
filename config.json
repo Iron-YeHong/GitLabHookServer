@@ -1,0 +1,16 @@
+{
+    "webhook": {
+        "host": "http://127.0.0.1",
+        "port": 12701,
+        "url": "/webhook"
+    },
+    "confluence": {
+        "host": "host",
+        "contentId": "pageId",
+        "username": "name",
+        "password": "pwd"
+    },
+    "repository": {
+        "targets": ["release", "master"]
+    }
+}

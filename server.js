@@ -1,7 +1,9 @@
 /*jshint esversion: 6 */
 var setting = require("./setting")
 
-var logger = require("./logger");
+var log4js = require("./logger");
+var logger = log4js.getLogger("custom");
+
 var confluence = require("./confluence");
 
 let host = setting.webhook.host;
@@ -11,6 +13,8 @@ let url = setting.webhook.url;
 
 var http = require("http");
 var handler = require("./gitlab_webhook_handler")({ path: `${url}` });
+
+logger.info(`GitLab Hook Server Start running`);
 
 // creat a GitLab webhook server
 http
@@ -26,11 +30,11 @@ logger.info(`GitLab Hook Server running at ${host}:${port}${url}`);
 
 // handle gitlab events
 handler.on("error", function(err) {
-  console.error("Error:", err.message);
+  logger.info("Error:", err.message);
 });
 
 handler.on("push", function(event) {
-  console.log(
+  logger.info(
     "Received a push event for %s to %s",
     event.payload.repository.name,
     event.payload.ref
@@ -38,7 +42,7 @@ handler.on("push", function(event) {
 });
 
 handler.on("issues", function(event) {
-  console.log(
+  logger.info(
     "Received an issue event for %s action=%s: #%d %s",
     event.payload.repository.name,
     event.payload.action,
@@ -53,7 +57,7 @@ handler.on("merge_request", function(event) {
   let target_branch = event.payload.object_attributes.target_branch;
 
   if (event.payload.object_attributes.action == "open") {
-    console.log(
+    logger.info(
       "Received an merge_request event @%s from %s(%s) to %s(%s)",
       event.payload.repository.name,
       source_branch,
@@ -62,7 +66,7 @@ handler.on("merge_request", function(event) {
       event.payload.assignee.name
     );
   } else if (event.payload.object_attributes.action == "merge") {
-    console.log(
+    logger.info(
       "Received an merge event @%s from %s(%s) to %s(%s)",
       event.payload.repository.name,
       source_branch,

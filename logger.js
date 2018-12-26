@@ -7,8 +7,9 @@ log4js.configure({
     },
     categories: {
         default: {appenders: ["std"], level: "debug"},
-        custom: {appenders: ["std", "file"], level: "all"}
+        custom: {appenders: ["std", "file"], level: "all"},
+        logfile: {appenders: ["file"], level: "all"}
     }
 });
 
-module.exports = log4js.getLogger("custom");
+module.exports = log4js;

@@ -6,6 +6,10 @@ var cheerio = require("cheerio");
 
 var setting = require("./setting").confluence;
 
+var log4js = require("./logger");
+var logger = log4js.getLogger("custom");
+var logfile = log4js.getLogger("logfile")
+
 function registerMergeRequest(merge){
   var desc = querystring.parse(merge.description,"<<<", ">>>")
   var mergeDesc = {
@@ -16,7 +20,11 @@ function registerMergeRequest(merge){
     detail: desc["[详细说明]"],
     influence: desc["[影响功能]"]
   };
+  logger.info(`Merge changes: ${mergeDesc.changes}`);
+  logger.info(`Merge detail: ${mergeDesc.detail}`);
+  logger.info(`Merge influence: ${mergeDesc.influence}`);
 
+  logger.info("Start update content");
   updateContent(mergeDesc)
 }
 
@@ -47,35 +55,36 @@ function updateContent(mergeDesc) {
         body: JSON.stringify(json)
       };
   
-      console.log("Updating contents...");
-      console.log(`Body:${options.body}`)
+      logger.info("Updating contents...");
+      //logfile.info(`Request Body:${options.body}`)
   
       request(options, function(error, response, body) {
         if (error) throw new Error(error);
   
-        console.log(
+        logger.info(
           "Response: " + response.statusCode + " " + response.statusMessage
         );
-        console.log(`Body: ${body}`);
+        logger.info("Content updated!");
+        //logfile.info(`Response Body: ${body}`);
       });
     });
   })
 }
 
 function getContent(handler) {
-    console.log("Gettting contents...");
+    logger.info("Gettting contents...");
     get("expand=body.editor", function(body){
-      console.log(`Content got!`);
+      logger.info(`Content got!`);
       handler(body)
     })
 }
 
 function getVersion(handler){
-    console.log("Gettting version...");
+    logger.info("Gettting version...");
     get("version", function(body){
       var json = JSON.parse(body)
       var version = json.version.number;
-
+      logger.info(`Get Version : ${version}`)
       handler(version)
     })
 }
@@ -98,7 +107,7 @@ function get(param, handler){
       request(options, function(error, response, body) {
         if (error) throw new Error(error);
     
-        console.log(
+        logger.info(
           "Response: " + response.statusCode + " " + response.statusMessage
         );
     

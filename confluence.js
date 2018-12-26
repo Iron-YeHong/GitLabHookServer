@@ -6,6 +6,8 @@ var cheerio = require("cheerio");
 
 var setting = require("./setting").confluence;
 
+var templateSetting = require("./template_setting");
+
 var log4js = require("./logger");
 var logger = log4js.getLogger("custom");
 var logfile = log4js.getLogger("logfile")
@@ -16,10 +18,11 @@ function registerMergeRequest(merge){
     num:3,
     developer: merge.developer,
     assignee: merge.assignee,
-    changes: desc["[概述]"],
-    detail: desc["[详细说明]"],
-    influence: desc["[影响功能]"]
+    changes: desc[templateSetting.changes.name],
+    detail: desc[templateSetting.detail.name],
+    influence: desc[templateSetting.influence.name]
   };
+
   logger.info(`Merge changes: ${mergeDesc.changes}`);
   logger.info(`Merge detail: ${mergeDesc.detail}`);
   logger.info(`Merge influence: ${mergeDesc.influence}`);
@@ -116,16 +119,24 @@ function get(param, handler){
 }
 
 function buildEditor(old, merge) {
-//   var $ = cheerio.load(old);
+  //var $ = cheerio.load(old);
+
+  deleteTemplateHintContent(merge);
   var tr = createTableRow(merge);
 
-//   $("table thead").append(tr);
-//   return $("body").html().replace("<br>", "<br />");
+  //$("table thead").append(tr);
+  //return $("body").html().replace("<br>", "<br />");
 
-    var index = old.indexOf("</thead>");
-    var content = old.substr(0, index) + tr + old.substr(index);
+  var index = old.indexOf("</thead>");
+  var content = old.substr(0, index) + tr + old.substr(index);
     
-   return content.replace(/<br>/g, '<br />');
+  return content.replace(/<br>/g, '<br />');
+}
+
+function deleteTemplateHintContent(merge){
+  merge.changes = merge.changes.replace(templateSetting.changes.desc, "");
+  merge.detail = merge.detail.replace(templateSetting.detail.desc, "");
+  merge.influence = merge.influence.replace(templateSetting.influence.desc, "");
 }
 
 function createTableRow(merge) {
